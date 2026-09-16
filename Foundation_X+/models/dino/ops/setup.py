@@ -36,7 +36,9 @@ def get_extensions():
 
     print(torch.cuda.is_available())
     print(CUDA_HOME)
-    if torch.cuda.is_available() and CUDA_HOME is not None:
+    # Compile CUDA ops whenever the toolkit is present so Apptainer image
+    # builds can succeed on CPU-only build hosts.
+    if CUDA_HOME is not None:
         extension = CUDAExtension
         sources += source_cuda
         print("Look here!!!")

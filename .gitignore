@@ -1,0 +1,26 @@
+# Experiment outputs
+*_seed_*/
+runs/
+logs/
+*.out
+*.err
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Checkpoints and caches
+*.pth
+*.pth.tar
+*.ckpt
+.cache/
+
+# Local env
+.venv/
+venv/
+.env
+.container-runtime/

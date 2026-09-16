@@ -3489,6 +3489,9 @@ def main(args):
     
 
     cyclictask = args.cyclictask.strip().upper()
+    # TEST* tags enable evaluation without adding those tasks to the training cycle.
+    # Example: candidptxCLS_TESTcls_candidptxCLS_TESTloc_candidptxLOC trains CLS only.
+    train_cyclictask = cyclictask.split("_TEST", 1)[0]
     ACTIVE_TASKS = [
         ("CHEXPERTCLS", 0),
         ("NIHCHESTXRAY14CLS", 1),
@@ -3511,7 +3514,11 @@ def main(args):
         ("SIIMACRLOC", 18),
         ("SIIMACRSEG", 19),
     ]
-    active_heads = [head for tag, head in ACTIVE_TASKS if tag in cyclictask]
+    active_heads = [head for tag, head in ACTIVE_TASKS if tag in train_cyclictask]
+    if not active_heads:
+        raise ValueError("No training tasks parsed from --cyclictask {}".format(args.cyclictask))
+    print("[Training Info.] Train tags:", train_cyclictask)
+    print("[Training Info.] Active task heads:", active_heads)
 
     # if isinstance(model, torch.nn.parallel.DistributedDataParallel):
     #     model._set_static_graph() # added by Nahid because of adding Classification & Segmentation component -- Forward/Backward pass issue
