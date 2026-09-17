@@ -82,7 +82,8 @@ python -m pip install --no-cache-dir -r "$ROOT/sol/requirements.txt"
 python -m pip install --no-cache-dir 'setuptools==69.5.1'
 
 export CUDA_HOME="${CUDA_HOME:-$(dirname "$(dirname "$(command -v nvcc)")")}"
-export TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST:-8.0;8.6;9.0}"
+# A100 is sm_80. Torch 1.13 does not recognize sm_90 (H100).
+export TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST:-8.0}"
 echo "CUDA_HOME=$CUDA_HOME"
 python -c "import pkg_resources, torch; print('torch', torch.__version__, 'cuda', torch.cuda.is_available())"
 

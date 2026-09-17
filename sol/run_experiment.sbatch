@@ -1,11 +1,12 @@
 #!/bin/bash
 #SBATCH --job-name=fx_candidptx
+#SBATCH -A grp_jliang12
 #SBATCH -N 1
 #SBATCH -G a100:1
 #SBATCH -c 12
 #SBATCH --mem=80G
 #SBATCH -p general
-#SBATCH -q class
+#SBATCH -q public
 #SBATCH -t 2-00:00:00
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=hunterflechsig@gmail.com
@@ -17,7 +18,7 @@
 #
 #   sbatch sol/run_experiment.sbatch candidptx_cls 42
 #   sbatch sol/run_experiment.sbatch candidptx_cls 42 resume
-#   sbatch --time=0-04:00:00 --job-name=fx_smoke sol/run_experiment.sbatch candidptx_cls 42 smoke
+#   sbatch --qos=debug --time=0-01:00:00 --job-name=fx_smoke sol/run_experiment.sbatch candidptx_cls 1 smoke
 
 set -euo pipefail
 
@@ -43,9 +44,11 @@ export BATCH_SIZE="${BATCH_SIZE:-24}"
 export FX_ENV
 
 if [[ "$MODE" == "smoke" ]]; then
+  # Training loop is range(1, total_epochs), so 2 means one epoch.
   export TOTAL_EPOCHS=2
   export BATCH_SIZE=8
   export NUM_WORKERS=4
+  export OUTPUT_ROOT="${SCRATCH}/foundationx_runs/smoke"
 fi
 
 module purge

@@ -51,8 +51,8 @@ sbatch sol/run_experiment.sbatch candidptx_cls 42
 # resume from the latest checkpoint
 sbatch sol/run_experiment.sbatch candidptx_cls 42 resume
 
-# short smoke test
-sbatch --time=0-04:00:00 --job-name=fx_smoke sol/run_experiment.sbatch candidptx_cls 42 smoke
+# short smoke test (debug QoS; override with --qos=public if debug rejects the GPU)
+sbatch --qos=debug --time=0-01:00:00 --job-name=fx_smoke sol/run_experiment.sbatch candidptx_cls 1 smoke
 
 # all seven
 ./sol/submit_all.sh 42
